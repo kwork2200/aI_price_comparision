@@ -7,7 +7,7 @@ import '../../widgets/navigation_bar.dart';
 import '../../widgets/price_info_bar.dart';
 import '../../widgets/product_header.dart';
 import '../../widgets/store_price_card.dart';
-import '../../services/serpapi_service.dart';
+import '../../services/price_api_service.dart';
 import '../theme/theme_controller.dart';
 import 'widgets/url_search_widget.dart';
 import '../about_us/about_us_view.dart';

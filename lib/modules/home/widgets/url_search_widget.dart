@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../../services/serpapi_service.dart';
+import '../../../services/price_api_service.dart';
 
 class UrlSearchWidget extends StatefulWidget {
   final bool isDark;
@@ -47,10 +47,10 @@ class _UrlSearchWidgetState extends State<UrlSearchWidget> {
 
     try {
       // Call SerpApi to search from URL
-      final result = await SerpApiService.searchFromUrl(url);
+      final result = await PriceApiService.searchFromUrl(url);
       
       // Extract store prices from response
-      final storePrices = SerpApiService.extractStorePrices(result);
+      final storePrices = PriceApiService.extractStorePrices(result);
       
       setState(() {
         _searchResults = storePrices;
@@ -429,11 +429,11 @@ class _UrlSearchWidgetState extends State<UrlSearchWidget> {
                         Get.back();
                         
                         try {
-                          final result = await SerpApiService.searchProduct(
+                          final result = await PriceApiService.searchProduct(
                             nameController.text.trim(),
                           );
                           
-                          final storePrices = SerpApiService.extractStorePrices(result);
+                          final storePrices = PriceApiService.extractStorePrices(result);
                           
                           if (storePrices.isNotEmpty) {
                             final mainProduct = {

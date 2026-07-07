@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import '../core/app_config.dart';
 
 class ProductHeader extends StatelessWidget {
   final String selectedRam;
@@ -13,17 +13,6 @@ class ProductHeader extends StatelessWidget {
     this.apiProductData,
   });
 
-  // IMPORTANT: Use your computer's IP address for mobile testing
-  // Find your IP: Open CMD and run: ipconfig
-  // Look for "IPv4 Address" under your active network adapter
-  // Replace 192.168.29.158 with YOUR computer's actual IP address
-  static const String _serverUrlWeb = 'http://localhost:3000/api/proxy/image';
-  static const String _serverUrlMobile = 'http://192.168.29.158:3000/api/proxy/image';
-
-  static String get _serverUrl {
-    return kIsWeb ? _serverUrlWeb : _serverUrlMobile;
-  }
-
   @override
   Widget build(BuildContext context) {
     // Extract data from API if available
@@ -34,16 +23,17 @@ class ProductHeader extends StatelessWidget {
     if (apiProductData != null) {
       try {
         final data = apiProductData!['data'];
-        final shoppingResults = data['shopping_results'] as List?;
-        if (shoppingResults != null && shoppingResults.isNotEmpty) {
-          final firstProduct = shoppingResults[0] as Map<String, dynamic>;
+        // New backend shape: { query, results: [{source, title, price, image, url}], ... }
+        final results = data['results'] as List?;
+        if (results != null && results.isNotEmpty) {
+          final firstProduct = results[0] as Map<String, dynamic>;
           productTitle = (firstProduct['title'] ?? 'Product').toString();
           storeName = (firstProduct['source'] ?? 'vivo').toString();
           
-          // Use proxy for image to bypass CORS
-          final originalImage = (firstProduct['thumbnail'] ?? firstProduct['serpapi_thumbnail'] ?? '').toString();
+          // Route through a public image proxy to avoid hotlinking/CORS issues
+          final originalImage = (firstProduct['image'] ?? '').toString();
           if (originalImage.isNotEmpty) {
-            productImage = '$_serverUrl?url=${Uri.encodeComponent(originalImage)}';
+            productImage = '${AppConfig.imageProxyBaseUrl}${Uri.encodeComponent(originalImage)}';
           }
         }
       } catch (e) {

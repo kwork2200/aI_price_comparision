@@ -1,0 +1,15 @@
+android
+ios
+linux
+macos
+windows
+q
+test
+fixtures
+scripts
+assets/sound
+assets/prank
+.dart_tool
+build/linux
+build/macos
+build/windows

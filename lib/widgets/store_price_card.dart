@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/serpapi_service.dart';
+import '../services/price_api_service.dart';
 
 class StorePriceCard extends StatefulWidget {
   final StorePrice storePrice;
